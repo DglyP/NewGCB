@@ -1,5 +1,6 @@
 import { HandLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 import { createGLBModel, updateGLBModel } from './glbManager.js';
+import { currentModelUrl } from './glbManager.js'; // Import the global variable
 
 export async function initializeHandLandmarker() {
   try {
@@ -33,10 +34,10 @@ export async function processHands(handLandmarker, video, scene) {
     if (handResults?.landmarks?.length > 0) {
       for (let i = 0; i < handResults.landmarks.length; i++) {
         const handLandmarks = handResults.landmarks[i];
-        const glbUrl = `models/model2.glb`; // Update with appropriate URL if multiple models are used
 
-        // Ensure model exists for the hand
-        await createGLBModel(scene, glbUrl, i);
+        // Use the current model URL dynamically
+        console.log(`Using model URL: ${currentModelUrl}`);
+        await createGLBModel(scene, currentModelUrl, i);
 
         // Update the model's position, scale, and visibility
         updateGLBModel(scene, handLandmarks, videoWidth, videoHeight, i);

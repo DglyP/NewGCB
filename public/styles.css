@@ -9,7 +9,7 @@ body {
   }
 
   #camera-select {
-    z-index: 10;
+    z-index: 000;
   }
   
   #three-canvas {

@@ -1,3 +1,5 @@
+import { setCurrentModelUrl } from './glbManager.js';
+
 export function setupPhotobooth(videoElement) {
   // Create a container for the photobooth experience
   const videoContainer = document.createElement('div');
@@ -76,6 +78,37 @@ export function setupPhotobooth(videoElement) {
   document.body.appendChild(buttonWrapper);
 
   console.log('Photobooth setup complete');
+
+  // Create a button to switch to Model 1
+  const model1Button = document.createElement('button');
+  model1Button.textContent = 'Switch to Model 1';
+  model1Button.style.padding = '10px 20px';
+  model1Button.style.fontSize = '16px';
+  model1Button.style.margin = '10px';
+  model1Button.style.cursor = 'pointer';
+  model1Button.addEventListener('click', () => {
+    setCurrentModelUrl('models/model1.glb');
+    console.log('Switched to Model 1');
+  });
+
+  // Create a button to switch to Model 2
+  const model2Button = document.createElement('button');
+  model2Button.textContent = 'Switch to Model 2';
+  model2Button.style.padding = '10px 20px';
+  model2Button.style.fontSize = '16px';
+  model2Button.style.margin = '10px';
+  model2Button.style.cursor = 'pointer';
+  model2Button.addEventListener('click', () => {
+    setCurrentModelUrl('models/model2.glb');
+    console.log('Switched to Model 2');
+  });
+
+  // Add buttons to the wrapper
+  buttonWrapper.appendChild(model1Button);
+  buttonWrapper.appendChild(model2Button);
+
+  // Append the button wrapper to the body
+  document.body.appendChild(buttonWrapper);
 }
 
 // Function to capture video feed and Three.js overlay

@@ -10,7 +10,7 @@ let invertX = false;
 let invertY = true;
 let invertZ = false;
 
-const yOffset = -80; // Adjust this value to move the model lower in the Y-axis
+const yOffset = 80; // Adjust this value to move the model lower in the Y-axis
 
 export async function loadGLBModel(url) {
   return new Promise((resolve, reject) => {
@@ -29,39 +29,32 @@ export async function loadGLBModel(url) {
 }
 
 export async function createGLBModel(scene, modelUrl, handIndex) {
-  const modelName = `model${handIndex + 1}`;
-
-  if (!modelCache[modelUrl]) {
-    try {
-      const model = await loadGLBModel(modelUrl);
-      modelCache[modelUrl] = model;
-      console.log(`GLB model loaded and cached: ${modelUrl}`);
-    } catch (error) {
-      console.error(`Failed to load GLB model ${modelUrl}:`, error);
-      return;
+    const modelName = `model${handIndex + 1}`;
+  
+    if (!modelCache[modelUrl]) {
+      try {
+        const model = await loadGLBModel(currentModelUrl); // Use global variable
+        modelCache[modelUrl] = model;
+        console.log(`GLB model loaded and cached: ${currentModelUrl}`);
+      } catch (error) {
+        console.error(`Failed to load GLB model ${currentModelUrl}:`, error);
+        return;
+      }
+    }
+  
+    if (!handModelMap[handIndex]) {
+      const model = modelCache[currentModelUrl].clone();
+      model.name = modelName;
+  
+      // Initial properties
+      model.rotation.x = Math.PI / 2; // Align model upright
+      model.visible = false; // Hidden initially
+      scene.add(model);
+  
+      handModelMap[handIndex] = modelName;
+      console.log(`GLB model ${modelName} created and added to the scene.`);
     }
   }
-
-  if (!handModelMap[handIndex]) {
-    const model = modelCache[modelUrl].clone();
-    model.name = modelName;
-
-    // Initial properties
-    model.rotation.x = Math.PI / 2; // Align model upright
-    model.visible = false; // Hidden initially
-    scene.add(model);
-
-    // Create a debug line for this hand
-    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-    const geometry = new THREE.BufferGeometry();
-    const line = new THREE.Line(geometry, material);
-    scene.add(line);
-    debugLines[handIndex] = line;
-
-    handModelMap[handIndex] = modelName;
-    console.log(`GLB model ${modelName} created and added to the scene.`);
-  }
-}
 
 export function updateGLBModel(scene, handLandmarks, videoWidth, videoHeight, handIndex) {
   const modelName = handModelMap[handIndex];
@@ -176,4 +169,10 @@ export function toggleInversion(axis) {
   if (axis === 'z') invertZ = !invertZ;
 
   console.log(`Inversion toggles: X: ${invertX}, Y: ${invertY}, Z: ${invertZ}`);
+}
+
+export let currentModelUrl = 'models/model1.glb'; // Default model
+
+export function setCurrentModelUrl(url) {
+  currentModelUrl = url;
 }
