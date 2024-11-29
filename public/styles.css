@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333; /* Background for photobooth */
+    overflow: hidden;
+  }
+
+  #camera-select {
+    z-index: 10;
+  }
+  
+  #three-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+    z-index: 1; /* Keep canvas above the video */
+    pointer-events: none; /* Allow interactions with the photobooth */
+  }
+  
+  #input-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Maintain aspect ratio and crop */
+    z-index: 0; /* Keep video below the canvas */
+  }
+
+#video-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#shutter-button {
+  margin-top: 20px;
+}
