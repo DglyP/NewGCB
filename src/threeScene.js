@@ -14,22 +14,81 @@ export function initializeScene(videoElement) {
     displayedWidth / 2,
     displayedHeight / 2,
     -displayedHeight / 2,
-    -1000,
-    1000
+    -1000, // Near clipping plane
+    1000   // Far clipping plane
   );
 
   const renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById('three-canvas'),
-    alpha: true, // To overlay on the video
+    preserveDrawingBuffer: true,
+    alpha: true, // Transparent background for overlaying on video
   });
 
   renderer.setSize(displayedWidth, displayedHeight);
-  camera.position.z = 10;
 
-  // Add lighting and other scene setup here
-  // ...
+  camera.position.z = 10; // Position the camera
 
-  return { scene, camera, renderer };
+  // Add directional light
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // Bright white light
+  directionalLight.position.set(0, 5, 10); // Above and in front of the camera
+  directionalLight.target.position.set(0, 0, 0); // Pointing towards the center
+  scene.add(directionalLight);
+  scene.add(directionalLight.target); // Add the target to the scene
+
+  // Add directional light helper
+  const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5); // Smaller helper
+  //scene.add(directionalLightHelper);
+
+  // Add point light
+  const pointLight = new THREE.PointLight(0xffffff, 10, 10000); // Soft white light
+  pointLight.position.set(0, 200, 100); // Positioned near the camera
+  scene.add(pointLight);
+
+  // Add point light helper
+  const pointLightHelper = new THREE.PointLightHelper(pointLight, 5); // Helper for debugging
+  //scene.add(pointLightHelper);
+
+  // Add ambient light
+  const ambientLight = new THREE.AmbientLight(0x404040, 1); // Subtle ambient light
+  scene.add(ambientLight);
+
+  // Add spotlight for focused lighting
+  const spotLight = new THREE.SpotLight(0xffffff, 100000); // Bright white spotlight
+  spotLight.position.set(0, 200, 100); // Position above and in front of the sphere
+  spotLight.angle = Math.PI ; // Narrow beam angle
+  spotLight.penumbra = 0.2; // Slightly softer edges
+  spotLight.distance = 500000; // Ensure the light reaches the sphere
+  spotLight.target.position.set(0, 0, 0); // Pointing towards the sphere
+  spotLight.target.updateMatrixWorld(); // Update target's world matrix
+  scene.add(spotLight);
+  scene.add(spotLight.target); // Add the target to the scene
+
+  // Add spotlight helper
+  const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+  //scene.add(spotLightHelper);
+
+  // Add axis helper
+  const axesHelper = new THREE.AxesHelper(50); // Smaller size for better visibility
+  //scene.add(axesHelper);
+
+  // Add test sphere to the scene
+  //addTestSphere(scene);
+
+  console.log('Directional Light Helper:', directionalLightHelper);
+  console.log('Point Light Helper:', pointLightHelper);
+  console.log('Spot Light Helper:', spotLightHelper);
+  console.log('Axes Helper:', axesHelper);
+
+  return {
+    scene,
+    camera,
+    renderer,
+    pointLight,
+    directionalLightHelper,
+    pointLightHelper,
+    spotLightHelper,
+    axesHelper,
+  };
 }
 
 export function render({ scene, camera, renderer, pointLight }) {
@@ -116,6 +175,12 @@ export function setupResizeHandler(renderer, camera, videoElement) {
   }
 
   window.addEventListener('resize', adjustSize);
+
+  // Also adjust size when sliders are used
+  const sliders = [heightSlider, topSlider, leftSlider];
+  sliders.forEach((slider) => {
+    slider.addEventListener('input', adjustSize);
+  });
 
   adjustSize(); // Initial adjustment
 }

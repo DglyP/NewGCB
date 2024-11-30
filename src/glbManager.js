@@ -83,7 +83,7 @@ export function updateGLBModel(scene, handLandmarks, videoWidth, videoHeight, ha
   // Convert midpoint to 3D space and apply Y-axis offset
   const x = (midX - 0.5) * videoWidth;
   const y = -(midY - 0.5) * videoHeight + yOffset;
-  const z = -midZ * videoWidth;
+  const z = -midZ * videoWidth; // Use videoWidth for depth scaling
 
   // Update model position
   model.position.set(x, y, z);

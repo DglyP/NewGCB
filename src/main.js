@@ -49,20 +49,36 @@ const textTopSlider = document.getElementById('textTopSlider');
 const textLeftSlider = document.getElementById('textLeftSlider');
 
 // Function to update the video-container size and position
+// Function to update the video-container size and position
 function updateVideoContainer() {
-  const height = heightSlider.value + '%';
-  const top = topSlider.value + '%';
-  const left = leftSlider.value + '%';
-
-  videoContainer.style.height = height;
-  videoContainer.style.top = top;
-  videoContainer.style.left = left;
-}
+    const height = heightSlider.value + '%';
+    const top = topSlider.value + '%';
+    const left = leftSlider.value + '%';
+  
+    videoContainer.style.height = height;
+    videoContainer.style.top = top;
+    videoContainer.style.left = left;
+  
+    // After updating the container size, adjust the renderer
+    adjustRendererSize();
+  }
 
 // Event listeners for video container sliders
-heightSlider.addEventListener('input', updateVideoContainer);
-topSlider.addEventListener('input', updateVideoContainer);
-leftSlider.addEventListener('input', updateVideoContainer);
+// Event listeners for video container sliders
+heightSlider.addEventListener('input', () => {
+    updateVideoContainer();
+    adjustRendererSize();
+  });
+  
+  topSlider.addEventListener('input', () => {
+    updateVideoContainer();
+    adjustRendererSize();
+  });
+  
+  leftSlider.addEventListener('input', () => {
+    updateVideoContainer();
+    adjustRendererSize();
+  });
 
 // Function to update text box scale
 textScaleSlider.addEventListener('input', () => {

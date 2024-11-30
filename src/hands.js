@@ -28,8 +28,11 @@ export async function initializeHandLandmarker() {
 export async function processHands(handLandmarker, video, scene) {
   try {
     const handResults = handLandmarker.detectForVideo(video, Date.now());
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
+    
+    // Get displayed dimensions of the video element
+    const rect = video.getBoundingClientRect();
+    const videoWidth = rect.width;
+    const videoHeight = rect.height;
 
     if (handResults?.landmarks?.length > 0) {
       for (let i = 0; i < handResults.landmarks.length; i++) {

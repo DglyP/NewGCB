@@ -25,29 +25,23 @@ export async function initializeFaceLandmarker() {
   }
 }
 
-export async function processFace(faceLandmarker, video, scene, visualizeLandmarks) {
+export async function processFace(faceLandmarker, video, scene) {
   try {
     const faceResults = faceLandmarker.detectForVideo(video, Date.now());
+    
+    // Get displayed dimensions of the video element
+    const rect = video.getBoundingClientRect();
+    const videoWidth = rect.width;
+    const videoHeight = rect.height;
 
     if (Array.isArray(faceResults?.faceLandmarks) && faceResults.faceLandmarks.length > 0) {
       const faceIndex = 0; // Assuming only one face is being tracked
       const faceLandmarks = faceResults.faceLandmarks[0];
 
-      // Visualize landmarks (optional)
-      /*visualizeLandmarks(
-        scene,
-        [faceLandmarks],
-        video.videoWidth,
-        video.videoHeight,
-        [0xff0000],
-        'face'
-      );
-*/
-
       // Create and update face model
       const modelUrl = 'models/faceModel.glb'; // Path to your face model
       await createGLBModelForFace(scene, modelUrl, faceIndex);
-      updateGLBModelForFace(scene, faceLandmarks, video.videoWidth, video.videoHeight, faceIndex);
+      updateGLBModelForFace(scene, faceLandmarks, videoWidth, videoHeight, faceIndex);
     }
   } catch (error) {
     console.error('Error processing face landmarks:', error);
