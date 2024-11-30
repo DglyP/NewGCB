@@ -123,3 +123,7 @@
   .toggle-controls:hover {
     background-color: #0056b3;
   }
+
+  #three-canvas {
+    pointer-events: none; /* Allows clicks to pass through to the video if needed */
+  }
