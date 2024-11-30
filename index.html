@@ -1,15 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Three.js + MediaPipe</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Webcam App</title>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-<select id="camera-select"></select>
-<video id="input-video" autoplay playsinline muted></video>
-<canvas id="three-canvas"></canvas>
-  <script type="module" src="/src/app.js"></script>
+  <div class="container">
+    <div class="image-container">
+      <img src="/borde_full.png" alt="Border" class="border-image" id="borderImage" />
+      <div class="editable-text" id="editableText" contenteditable="true">
+        2019
+      </div>
+      <div class="video-container" id="videoContainer">
+        <video id="webcam" autoplay playsinline></video>
+      </div>
+    </div>
+
+    <!-- Toggle button -->
+    <button id="toggleControls" class="toggle-controls">Hide Controls</button>
+
+    <div class="controls">
+      <h3>Text</h3>
+      <label>
+        Text Scale:
+        <input type="range" id="textScaleSlider" min="10" max="200" step="1" value="20" />
+        <span id="textScaleValue">20px</span>
+      </label>
+      <label>
+        Text Top:
+        <input type="range" id="textTopSlider" min="0" max="100" step="0.1" value="10" />
+        <span id="textTopValue">10%</span>
+      </label>
+      <label>
+        Text Left:
+        <input type="range" id="textLeftSlider" min="0" max="100" step="0.1" value="50" />
+        <span id="textLeftValue">50%</span>
+      </label>
+
+      <h3>Video</h3>
+      <label>
+        Scale:
+        <input type="range" id="heightSlider" min="10" max="100" value="100" />
+      </label>
+      <label>
+        Top:
+        <input type="range" id="topSlider" min="0" max="100" value="49" />
+      </label>
+      <label>
+        Left:
+        <input type="range" id="leftSlider" min="0" max="100" value="50" />
+      </label>
+      <label for="fileName">File Name:</label>
+      <input type="text" id="fileName" placeholder="Enter file name" />
+      <button id="shutter">Capture</button>
+    </div>
+
+    <canvas id="snapshot" hidden></canvas>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

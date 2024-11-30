@@ -1,23 +1,36 @@
-import { initializeScene, render, visualizeLandmarks, setupResizeHandler } from './threeScene.js';
-import { setupMediaPipe } from './mediapipe.js';
-import { setupPhotobooth } from './photobooth.js';
+const video = document.getElementById('webcam');
+const shutterButton = document.getElementById('shutter');
+const canvas = document.getElementById('snapshot');
+const context = canvas.getContext('2d');
+const fileNameInput = document.getElementById('fileName');
 
-// Video element
-const video = document.getElementById('input-video');
 
-// Setup the photobooth experience
-setupPhotobooth(video);
+// Access the webcam
+function captureSnapshot() {
+  const videoWidth = video.videoWidth;
+  const videoHeight = video.videoHeight;
 
-// Initialize Three.js scene with video element dimensions
-const { scene, camera, renderer } = initializeScene(video);
+  canvas.width = videoWidth;
+  canvas.height = videoHeight;
 
-// Setup resize handler
-setupResizeHandler(renderer, camera, video);
+  // Draw the video frame on the canvas
+  context.drawImage(video, 0, 0, videoWidth, videoHeight);
 
-// Start rendering the scene
-render({ scene, camera, renderer });
+  // Convert the canvas to a data URL
+  const imageDataURL = canvas.toDataURL('image/png');
 
-// Start MediaPipe processing
-setupMediaPipe(scene, (scene, landmarks, width, height, colors, groupName) => {
-  visualizeLandmarks(scene, landmarks, width, height, colors, groupName);
-});
+  // Get the file name from the input field
+  const fileName = fileNameInput.value.trim() || 'snapshot';
+
+  // Create a temporary <a> element to trigger the download
+  const downloadLink = document.createElement('a');
+  downloadLink.href = imageDataURL;
+  downloadLink.download = `${fileName}.png`; // Use the input file name with .png extension
+  downloadLink.click(); // Programmatically click the link to trigger the download
+}
+
+// Event listener for the capture button
+shutterButton.addEventListener('click', captureSnapshot);
+// Initialize the webcam when the page loads
+window.addEventListener('load', initWebcam);
+
