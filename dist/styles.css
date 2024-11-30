@@ -1,0 +1,125 @@
+/* Reset default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Ensure body and html fill the viewport */
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* Container fills the viewport */
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Border image styling */
+  .border-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2; /* In front of the webcam feed */
+  }
+  
+  /* Video container matches the transparent area */
+  .video-container {
+    position: absolute;
+    top: 49%;
+    left: 50%;
+    width: 100%; /* Adjust to match the transparent area's width */
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    z-index: 1; /* Behind the border image */
+    aspect-ratio: 16 / 9; /* Adjust to your webcam's aspect ratio */
+  }
+  
+  /* Webcam video styling */
+  #webcam {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Fills the container without distortion */
+  }
+  
+  #snapshot {
+    display: none;
+  }
+  
+  .controls {
+    position: fixed;
+    bottom: 0%;
+    left: 5%;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .controls label {
+    font-size: 14px;
+  }
+  
+  #fileName {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+  }
+  
+  #shutter {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+/* Editable text box */
+/* Editable text box */
+.editable-text {
+    position: absolute; /* Anchored to the image */
+    top: 15%; /* Fixed distance from the top */
+    left: 48%; /* Fixed distance from the left */
+    padding: 10px 20px; /* Fixed padding */
+    font-size: 25px; /* Fixed font size */
+    font-weight: bold;
+    color: #ffffff; /* White text */
+    text-align: center; /* Center-align text */
+    cursor: text; /* Indicate editability */
+    z-index: 3; /* Above the image but below other controls */
+  }
+  /* Toggle controls button */
+.toggle-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+  }
+  
+  .toggle-controls:hover {
+    background-color: #0056b3;
+  }
