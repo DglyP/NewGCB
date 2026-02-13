@@ -176,12 +176,6 @@ export function setupResizeHandler(renderer, camera, videoElement) {
 
   window.addEventListener('resize', adjustSize);
 
-  // Also adjust size when sliders are used
-  const sliders = [heightSlider, topSlider, leftSlider];
-  sliders.forEach((slider) => {
-    slider.addEventListener('input', adjustSize);
-  });
-
   adjustSize(); // Initial adjustment
 }
 

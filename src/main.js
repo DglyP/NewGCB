@@ -10,7 +10,7 @@ const video = document.getElementById('webcam');
 const { scene, camera, renderer } = initializeScene(video);
 
 // Set up the resize handler
-//setupResizeHandler(renderer, camera, video);
+setupResizeHandler(renderer, camera, video);
 
 // Start rendering the scene
 render({ scene, camera, renderer });
@@ -33,6 +33,8 @@ const editableText = document.getElementById('editableText');
 const controls = document.querySelector('.controls');
 const toggleButton = document.getElementById('toggleControls');
 
+// Pass the sliders to setupResizeHandler
+setupResizeHandler(renderer, camera, videoContainer, [heightSlider, topSlider, leftSlider]);
 // Toggle the visibility of the controls
 toggleButton.addEventListener('click', () => {
   if (controls.style.display === 'none') {
@@ -62,7 +64,16 @@ function updateVideoContainer() {
     // After updating the container size, adjust the renderer
     adjustRendererSize();
   }
+function adjustRendererSize() {
+  const rect = videoContainer.getBoundingClientRect();
+  renderer.setSize(rect.width, rect.height);
 
+  camera.left = -rect.width / 2;
+  camera.right = rect.width / 2;
+  camera.top = rect.height / 2;
+  camera.bottom = -rect.height / 2;
+  camera.updateProjectionMatrix();
+}
 // Event listeners for video container sliders
 // Event listeners for video container sliders
 heightSlider.addEventListener('input', () => {
